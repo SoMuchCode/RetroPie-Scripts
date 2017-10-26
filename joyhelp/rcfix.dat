@@ -1,0 +1,68 @@
+
+#######JOYHELP-CONFIG#######
+##### BY CHRIS MCBRIDE #####
+############################
+# JOYHELP DIRECTORIES
+# maybe these could change...
+CONFIGDIR=/opt/retropie/configs/all
+XBDRDIR=$CONFIGDIR/joyhelp
+
+# Don't Change These
+XBOXMGR=$XBDRDIR/joyhelp-enable.cfg
+RACONFIGFILE=$CONFIGDIR/retroarch.cfg
+LOGFILE=$XBDRDIR/xdrv.log
+
+MODE=$(cat "$XBOXMGR" | head -c1)
+#################
+
+if [ "$MODE" = "1" ] || [ "$MODE" = "6" ]		# We may be in daemon mode, so use default config file
+then
+	#sudo rmmod xpad
+	#sudo modprobe uinput
+	#sudo modprobe joydev
+	$XBDRDIR/configfix.sh
+	configfile=$XBDRDIR/joyhelp-config.cfg
+	basicXBOX=$(cat "$configfile")
+	xcommand="sudo $basicXBOX &"
+	eval $xcommand			## lazy and sloppy this can be abused easily.
+fi
+
+if [ "$MODE" = "2" ] || [ "$MODE" = "7" ]		# We are NOT in daemon mode, so use no-daemon config file
+then
+	#sudo rmmod xpad
+	#sudo modprobe uinput
+	#sudo modprobe joydev
+	$XBDRDIR/configfix.sh
+	configfile=$XBDRDIR/joyhelp-nodaemon.cfg
+	basicXBOX=$(cat "$configfile")
+	xcommand="$basicXBOX"
+	eval $xcommand			## lazy and sloppy this can be abused easily.
+fi
+
+if [ "$MODE" = "3" ] || [ "$MODE" = "8" ]		# We are in forced daemon mode, so use daemon config file
+then
+	#sudo rmmod xpad
+	#sudo modprobe uinput
+	#sudo modprobe joydev
+	$XBDRDIR/configfix.sh
+	configfile=$XBDRDIR/joyhelp-daemon.cfg
+	basicXBOX=$(cat "$configfile")
+	xcommand="$basicXBOX &"
+	eval $xcommand			## lazy and sloppy this can be abused easily.
+fi
+
+# NOTE: enabled 4 and 9 only enable driver when a game is launched,
+if [ "$MODE" = "4" ] || [ "$MODE" = "9" ]		# Enable in game only
+then
+	$XBDRDIR/configfix.sh
+fi
+
+# these are for the debug log
+if [ "$MODE" = "5" ] || [ "$MODE" = "6" ] || [ "$MODE" = "7" ] || [ "$MODE" = "8" ] || [ "$MODE" = "9" ]
+then
+	echo "rclocal: $(date)" > $XBDRDIR/xdrv.log
+	echo "rclocal: exit 0 - enabled = $MODE" >> $XBDRDIR/xdrv.log
+	sudo chown pi:pi $XBDRDIR/xdrv.log
+fi
+#### END JOYHELP CONFIG ####
+#
