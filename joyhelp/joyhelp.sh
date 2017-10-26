@@ -1,9 +1,6 @@
 #!/bin/sh -e
 
 ########JOYHELP-MENU########
-###### by SoMuchCode #######
-############################
-
 # ~/RetroPie/retropiemenu/joyhelp.sh
 
 # Joystick / Controller utility for RetroPie
