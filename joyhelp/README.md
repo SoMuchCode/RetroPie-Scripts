@@ -11,12 +11,14 @@ Joyhelp appears under the RetroPie system as a new menu named "JOYHELP" so it is
 Currently the scripts assume the user/group will be pi:pi
 
 ### Clone and install
-	# press F4 to go to the shell of you Raspberry Pi.
+	# press F4 to go to the shell of your Raspberry Pi.
 	git clone https://github.com/SoMuchCode/RetroPie-Scripts.git
 	cd RetroPie-Scripts
 	chmod +x joyhelp-install.sh
+	./joyhelp-install.sh
 
-I have not made an installer yet... so here are the quick install instructions.
+# Manual Install Instructions
+I have not thoroughly tested the installer yet... so here are the quick install instructions.
 
 ### Download and extract joyhelp
 	git clone https://github.com/SoMuchCode/RetroPie-Scripts.git
