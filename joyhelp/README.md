@@ -42,7 +42,7 @@ I have not made an installer yet... so here are the quick install instructions.
 	cp runcommand-onend.sh /opt/retropie/configs/all/
 	cp controller_configs/*.cfg /opt/retropie/configs/all/joyhelp/controller_configs/
 
-Reboot RetroPie
+### Reboot RetroPie
 
 Under the RetroPie main menu, there should be a new
 entry named "JOYHELP", choose option 10, Initialize
