@@ -9,38 +9,37 @@ Joyhelp appears under the RetroPie system as a new menu named "JOYHELP" so it is
 
 # Install Instructions
 Currently the scripts assume the user/group will be pi:pi
+
 I have not made an installer yet... so here are the quick install instructions.
 
 ### Download and extract joyhelp
-cd joyhelp
+	cd joyhelp
 
 ### Make backups first!!!
-cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
+	cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
+	cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bak
+	sudo cp /etc/rc.local /etc/rc.local.bak
 
-cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bak
-
-sudo cp /etc/rc.local /etc/rc.local.bak
-
-You may not have these files:
-cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bak 
-cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
+	You may not have these files:
+	cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bak 
+	cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
 
 ### Fix file permissions
-chmod +x *.sh
-chown pi:pi *
+	chmod +x *.sh
+	chown pi:pi *
 
 ### Create install directories
-mkdir /opt/retropie/configs/all/joyhelp
-mkdir /opt/retropie/configs/all/joyhelp/controller_configs
+	mkdir /opt/retropie/configs/all/joyhelp
+	mkdir /opt/retropie/configs/all/joyhelp/controller_configs
 
 ### Copy the files
-cp joyhelp.sh ~/RetroPie/retropiemenu/
-cp configfix.sh /opt/retropie/configs/all/joyhelp/
-cp rcfix.dat /opt/retropie/configs/all/joyhelp/
-cp rcfix.sh /opt/retropie/configs/all/joyhelp/
-cp runcommand-onstart.sh /opt/retropie/configs/all/
-cp runcommand-onend.sh /opt/retropie/configs/all/
-cp controller_configs/*.cfg /opt/retropie/configs/all/joyhelp/controller_configs/
+	cp joyhelp.sh ~/RetroPie/retropiemenu/
+	cp configfix.sh /opt/retropie/configs/all/joyhelp/
+	cp rcfix.dat /opt/retropie/configs/all/joyhelp/
+	cp rcfix.sh /opt/retropie/configs/all/joyhelp/
+	cp runcommand-onstart.sh /opt/retropie/configs/all/
+	cp runcommand-onend.sh /opt/retropie/configs/all/
+	cp controller_configs/*.cfg /opt/retropie/configs/all/joyhelp/controller_configs/
 
 Reboot RetroPie
 
