@@ -1,4 +1,4 @@
-# Joyhelp
+# Joyhelp (for RetroPie)
 # Early beta version 0.2
 
 A tool for managing xboxdrv/xpad startup and configs with RetroPie running on the Raspberry Pi. It makes it easy to swtich between running xboxdrv as a daemon, always-on, disable it, or start it only when a game is launched.
@@ -6,6 +6,17 @@ A tool for managing xboxdrv/xpad startup and configs with RetroPie running on th
 Your config (or a default) will be used for every mode.
 
 Joyhelp appears under the RetroPie system as a new menu named "JOYHELP" so it is easy to use.
+
+# Make backups first!!!
+cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
+
+cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bak
+
+sudo cp /etc/rc.local /etc/rc.local.bak
+
+You may not have these files:
+cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bak 
+cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
 
 # Install Instructions
 Currently the scripts assume the user/group will be pi:pi
@@ -16,18 +27,11 @@ download and extract joyhelp.
 
 cd joyhelp
 
-# Make backups!!!
-cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
-
-cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bak
-
-sudo cp /etc/rc.local /etc/rc.local.bak
-
-# Fix file permissions
+### Fix file permissions
 chmod +x *.sh
 chown pi:pi *
 
-# create install directories
+## create install directories
 mkdir /opt/retropie/configs/all/joyhelp
 mkdir /opt/retropie/configs/all/joyhelp/controller_configs
 
