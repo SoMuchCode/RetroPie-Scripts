@@ -62,7 +62,6 @@ sed 's/\"/ /g' $XBDRDIR/.tempdfile3 > $XBDRDIR/.tempdfile4
 sed 's/\\/\\ /g' $XBDRDIR/.tempdfile4 > $XBDRDIR/.tempdfile3
 sed 's/  / /g' $XBDRDIR/.tempdfile3 > $XBDRDIR/.tempdfile2
 
-
 RCTEMP=$(cat "$XBDRDIR/.tempdfile2")			## RE_DEFINED RCTEMP!!!!
 foundit=0			## Flow control
 outfile=""			## The outfile we are working on
