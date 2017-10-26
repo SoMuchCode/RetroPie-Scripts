@@ -13,7 +13,8 @@ Currently the scripts assume the user/group will be pi:pi
 I have not made an installer yet... so here are the quick install instructions.
 
 ### Download and extract joyhelp
-	cd joyhelp
+	git clone https://github.com/SoMuchCode/RetroPie-Scripts.git
+	cd RetroPie-Extra/joyhelp
 
 ### Make backups first!!!
 	cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
