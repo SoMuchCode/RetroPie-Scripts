@@ -17,8 +17,6 @@ I have not made an installer yet... so here are the quick install instructions.
 	cd RetroPie-Scripts/joyhelp
 
 ### Make backups first!!!
-	cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
-	cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bak
 	sudo cp /etc/rc.local /etc/rc.local.bak
 
 	You may not have these files:

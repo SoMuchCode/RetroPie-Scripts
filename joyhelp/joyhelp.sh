@@ -258,7 +258,7 @@ ASK_TO_REBOOT=1
 #
 calc_wt_size
 while true; do
-  FUN=$(whiptail --title "Raspberry Pi Xboxdrv-helper" --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
+  FUN=$(whiptail --title "Raspberry Pi Joyhelp" --menu "Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
     "1 Disable" "Don't parse config scripts" \
     "2 Automatic (config-file) Mode" "Uses default config" \
     "3 NON Daemon Mode" "Non-Daemon config file" \
