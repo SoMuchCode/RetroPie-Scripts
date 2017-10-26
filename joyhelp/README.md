@@ -16,6 +16,36 @@ Currently the scripts assume the user/group will be pi:pi
 	cd RetroPie-Scripts
 	chmod +x joyhelp-install.sh
 	./joyhelp-install.sh
+	# Reboot your Pi and Joyhelp should appear in the menu.
+
+### Reboot RetroPie
+
+Under the RetroPie main menu, there should be a new
+entry named "JOYHELP", choose option 10, Initialize
+joyhelp. This will parse your init file and look for
+an xboxdrv config file in it. If it finds one, it
+will use it, if not one will be created.
+
+Once initialized, joyhelp uses the newly created
+/opt/retropie/configs/all/joyhelp/joyhelp-config.cfg
+so if you are great at creating custom configs you
+will put it here.
+
+Every reboot, joyhelp looks at this config file and
+creates joyhelp-daemon.cfg and joyhelp-nodaemon.cfg
+which are used when launching in different modes.
+
+# Joyhelp has several modes of operation:
+	0 = Disable: xboxdrv config won't be loaded at boot.
+	1 = AUTO MODE: always use xboxdrv, can be daemon or not depending on config file: joyhelp-config.cfg
+	2 = NO daemon mode
+	3 = Forced daemon mode
+	4 = Enabled only in game / rom / emulator (NOT daemon mode)
+
+On game launch modes: 1 (if not running as a daemon), 2, and 4 will use the 'runcommand-onstart.sh' script to see if there is a custom config for the system. If it finds one it will load it. Look at the file to see how it works.
+	
+If debug is set in the menu, joyhelp will log to:
+/opt/retropie/configs/all/joyhelp/xdrv.log
 
 # Manual Install Instructions
 I have not thoroughly tested the installer yet... so here are the quick install instructions.
@@ -48,36 +78,6 @@ I have not thoroughly tested the installer yet... so here are the quick install 
 	cp runcommand-onstart.sh /opt/retropie/configs/all/
 	cp runcommand-onend.sh /opt/retropie/configs/all/
 	cp controller_configs/*.cfg /opt/retropie/configs/all/joyhelp/controller_configs/
-
-### Reboot RetroPie
-
-Under the RetroPie main menu, there should be a new
-entry named "JOYHELP", choose option 10, Initialize
-joyhelp. This will parse your init file and look for
-an xboxdrv config file in it. If it finds one, it
-will use it, if not one will be created.
-
-Once initialized, joyhelp uses the newly created
-/opt/retropie/configs/all/joyhelp/joyhelp-config.cfg
-so if you are great at creating custom configs you
-will put it here.
-
-Every reboot, joyhelp looks at this config file and
-creates joyhelp-daemon.cfg and joyhelp-nodaemon.cfg
-which are used when launching in different modes.
-
-# Joyhelp has several modes of operation:
-	0 = Disable: xboxdrv config won't be loaded at boot.
-	1 = AUTO MODE: always use xboxdrv, can be daemon or not depending on config file: joyhelp-config.cfg
-	2 = NO daemon mode
-	3 = Forced daemon mode
-	4 = Enabled only in game / rom / emulator (NOT daemon mode)
-
-On game launch modes: 1 (if not running as a daemon), 2, and 4 will use the 'runcommand-onstart.sh' script to see if there is a custom config for the system. If it finds one it will load it. Look at the file to see how it works.
-	
-If debug is set in the menu, joyhelp will log to:
-/opt/retropie/configs/all/joyhelp/xdrv.log
-
 
 # Important
 NOTE: These scripts will make changes to /etc/rc.local
