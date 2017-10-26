@@ -1,16 +1,16 @@
 # Joyhelp
 # Early beta version 0.2
-#
-# A tool for managing xboxdrv/xpad startup and configs with RetroPie running on the Raspberry Pi. It makes it easy to swtich between running xboxdrv as a daemon, always-on, disable it, or start it only when a game is launched.
 
-# Your config (or a default) will be used for every mode.
+A tool for managing xboxdrv/xpad startup and configs with RetroPie running on the Raspberry Pi. It makes it easy to swtich between running xboxdrv as a daemon, always-on, disable it, or start it only when a game is launched.
 
-# Joyhelp appears under the RetroPie system as a new menu named "JOYHELP"
-# so it is easy to use.
+Your config (or a default) will be used for every mode.
 
-# Currently the scripts assume the user/group will be pi:pi
-# I have not made an installer yet... so here are the quick
-# install instructions.
+Joyhelp appears under the RetroPie system as a new menu named "JOYHELP" so it is easy to use.
+
+# Install Instructions
+Currently the scripts assume the user/group will be pi:pi
+
+I have not made an installer yet... so here are the quick install instructions.
 
 download and extract joyhelp.
 
