@@ -18,7 +18,9 @@ cd joyhelp
 
 # Make backups!!!
 cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
+
 cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bak
+
 sudo cp /etc/rc.local /etc/rc.local.bak
 
 # Fix file permissions
@@ -38,21 +40,22 @@ cp runcommand-onstart.sh /opt/retropie/configs/all/
 cp runcommand-onend.sh /opt/retropie/configs/all/
 cp controller_configs/*.cfg /opt/retropie/configs/all/joyhelp/controller_configs/
 
-# Reboot RetroPie
-# Under the RetroPie main menu, there should be a new
-# entry named "JOYHELP", choose option 10, Initialize
-# joyhelp. This will parse your init file and look for
-# an xboxdrv config file in it. If it finds one, it
-# will use it, if not one will be created.
+Reboot RetroPie
 
-# Once initialized, joyhelp uses the newly created
-# /opt/retropie/configs/all/joyhelp/joyhelp-config.cfg
-# so if you are great at creating custom configs you
-# will put it here.
+Under the RetroPie main menu, there should be a new
+entry named "JOYHELP", choose option 10, Initialize
+joyhelp. This will parse your init file and look for
+an xboxdrv config file in it. If it finds one, it
+will use it, if not one will be created.
 
-# Every reboot, joyhelp looks at this config file and
-# creates joyhelp-daemon.cfg and joyhelp-nodaemon.cfg
-# which are used when launching in different modes.
+Once initialized, joyhelp uses the newly created
+/opt/retropie/configs/all/joyhelp/joyhelp-config.cfg
+so if you are great at creating custom configs you
+will put it here.
+
+Every reboot, joyhelp looks at this config file and
+creates joyhelp-daemon.cfg and joyhelp-nodaemon.cfg
+which are used when launching in different modes.
 
 # Joyhelp has several modes of operation:
 	0 = Disable: xboxdrv config won't be loaded at boot.
@@ -61,15 +64,14 @@ cp controller_configs/*.cfg /opt/retropie/configs/all/joyhelp/controller_configs
 	3 = Forced daemon mode
 	4 = Enabled only in game / rom / emulator (NOT daemon mode)
 
-	On game launch modes: 1 (if not running as a daemon), 2, and 4 will use the 'runcommand-onstart.sh' script to see if there is a custom config for the system. If it finds one it will load it. Look at the file to see how it works.
+On game launch modes: 1 (if not running as a daemon), 2, and 4 will use the 'runcommand-onstart.sh' script to see if there is a custom config for the system. If it finds one it will load it. Look at the file to see how it works.
 	
-# If debug is set in the menu, joyhelp will log to:
-# /opt/retropie/configs/all/joyhelp/xdrv.log
+If debug is set in the menu, joyhelp will log to:
+/opt/retropie/configs/all/joyhelp/xdrv.log
 
 
+# Important
+NOTE: These scripts will make changes to /etc/rc.local
+your original will be copied to: /etc/rc.local.bakup
 
-# NOTE: These scripts will make changes to /etc/rc.local
-# your original will be copied to: /etc/rc.local.bakup
-# 
-# NOTE: These scripts will replace any runcommand-onstart.sh / runcommand-onend.sh scripts you may have setup. You will want to make backups of these files (if they exist on your system) before installing.
-#
+NOTE: These scripts will replace any runcommand-onstart.sh / runcommand-onend.sh scripts you may have setup. You will want to make backups of these files (if they exist on your system) before installing.
