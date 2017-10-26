@@ -20,20 +20,12 @@ Currently the scripts assume the user/group will be pi:pi
 
 ### Reboot RetroPie
 
-After rebooting under the RetroPie main menu, there 
-should be a new entry named "JOYHELP", choose option 
-10, Initialize joyhelp. This will parse your init 
-file and look for an xboxdrv config file in it. If 
-it finds one, it will use it, if not one will be created.
+After rebooting...
+Under the RetroPie main menu, there should be a new entry named "JOYHELP", choose option 10, Initialize joyhelp. This will parse your init file and look for an xboxdrv config file in it. If it finds one, it will use it, if not one will be created.
 
-Once initialized, joyhelp uses the newly created
-/opt/retropie/configs/all/joyhelp/joyhelp-config.cfg
-so if you are great at creating custom configs you
-will put it here.
+Once initialized, joyhelp uses the newly created '/opt/retropie/configs/all/joyhelp/joyhelp-config.cfg' so if you are great at creating custom configs you will put it here.
 
-Every reboot, joyhelp looks at this config file and
-creates joyhelp-daemon.cfg and joyhelp-nodaemon.cfg
-which are used when launching in different modes.
+Every reboot, joyhelp looks at this config file and creates 'joyhelp-daemon.cfg' and 'joyhelp-nodaemon.cfg' which are used when launching in different modes.
 
 # Joyhelp has several modes of operation:
 	0 = Disable: xboxdrv config won't be loaded at boot.
@@ -79,6 +71,11 @@ I have not thoroughly tested the installer yet... so here are the quick install 
 	cp runcommand-onend.sh /opt/retropie/configs/all/
 	cp controller_configs/*.cfg /opt/retropie/configs/all/joyhelp/controller_configs/
 
+### Reboot RetroPie
+
+After rebooting...
+Under the RetroPie main menu, there should be a new entry named "JOYHELP", choose option 10, Initialize joyhelp. This will parse your init file and look for an xboxdrv config file in it. If it finds one, it will use it, if not one will be created.
+	
 # Important
 NOTE: These scripts will make changes to /etc/rc.local
 your original will be copied to: /etc/rc.local.bakup
