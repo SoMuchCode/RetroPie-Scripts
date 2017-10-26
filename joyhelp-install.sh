@@ -1,5 +1,6 @@
 #!/bin/sh
 # Joyhelp install script
+#
 
 cd joyhelp
 
