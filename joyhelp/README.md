@@ -20,11 +20,11 @@ Currently the scripts assume the user/group will be pi:pi
 
 ### Reboot RetroPie
 
-Under the RetroPie main menu, there should be a new
-entry named "JOYHELP", choose option 10, Initialize
-joyhelp. This will parse your init file and look for
-an xboxdrv config file in it. If it finds one, it
-will use it, if not one will be created.
+After rebooting under the RetroPie main menu, there 
+should be a new entry named "JOYHELP", choose option 
+10, Initialize joyhelp. This will parse your init 
+file and look for an xboxdrv config file in it. If 
+it finds one, it will use it, if not one will be created.
 
 Once initialized, joyhelp uses the newly created
 /opt/retropie/configs/all/joyhelp/joyhelp-config.cfg
