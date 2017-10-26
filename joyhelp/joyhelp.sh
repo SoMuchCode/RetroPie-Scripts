@@ -1,6 +1,10 @@
 #!/bin/sh -e
-# joyswap.sh
-# ~/RetroPie/retropiemenu/joyswap.sh
+
+########JOYHELP-MENU########
+###### by SoMuchCode #######
+############################
+
+# ~/RetroPie/retropiemenu/joyhelp.sh
 
 # Joystick / Controller utility for RetroPie
 # I use xboxdrv and xpad and have a collection of scripts to manage them.

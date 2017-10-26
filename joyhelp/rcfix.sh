@@ -1,10 +1,16 @@
 #!/bin/sh
 
+#######JOYHELP-RCFIX########
+###### by SoMuchCode #######
+############################
+# rcfix.sh
+# script to parse rc.local and create initial config for joyhelp
+# uses rcfix.dat
+
 # JOYHELP DIRECTORIES
 # maybe these could change...
 CONFIGDIR=/opt/retropie/configs/all
 XBDRDIR=$CONFIGDIR/joyhelp
-#XBDRDIR=$CONFIGDIR/x-b-o-x-d-r-v   # so regexp doesn't del this line...
 
 # Don't Change These
 XBOXMGR=$XBDRDIR/joyhelp-enable.cfg
