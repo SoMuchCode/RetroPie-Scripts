@@ -11,7 +11,7 @@ Joyhelp appears under the RetroPie system as a new menu named "JOYHELP" so it is
 Currently the scripts assume the user/group will be pi:pi
 I have not made an installer yet... so here are the quick install instructions.
 
-### download and extract joyhelp.
+### Download and extract joyhelp
 cd joyhelp
 
 ### Make backups first!!!
@@ -29,7 +29,7 @@ cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runco
 chmod +x *.sh
 chown pi:pi *
 
-### create install directories
+### Create install directories
 mkdir /opt/retropie/configs/all/joyhelp
 mkdir /opt/retropie/configs/all/joyhelp/controller_configs
 
