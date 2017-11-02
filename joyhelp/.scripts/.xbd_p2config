@@ -1,0 +1,1 @@
+--id 1 --led 3 --type xbox360 --deadzone 4400 --trigger-as-button --alt-config /opt/retropie/configs/all/joyhelp/controller_configs/xboxdrv_4way.cfg --alt-config /opt/retropie/configs/all/joyhelp/controller_configs/xboxdrv_player2.cfg

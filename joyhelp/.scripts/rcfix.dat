@@ -1,0 +1,13 @@
+
+#######JOYHELP-CONFIG#######
+###### by SoMuchCode #######
+############################
+# JOYHELP DIRECTORIES
+CONFIGDIR=/opt/retropie/configs/all
+JOYHELPDIR=$CONFIGDIR/joyhelp
+RCHELPER=$JOYHELPDIR/rchelp.sh
+
+$RCHELPER
+
+#####END#JOYHELP#CONFIG#####
+#

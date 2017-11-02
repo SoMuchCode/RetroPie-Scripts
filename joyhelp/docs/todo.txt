@@ -1,0 +1,24 @@
+TODO:
+Fix problem if config uses sleep - current kludge is to insert && after it.
+	-test that 'sleep..' has a command after it or it will cause problems when we put the && after it...
+	-or fix it and remove: | sed "s|sleep..|sleep 1 \&\&|g"
+Portablity 	-remove references to ~ and replace with $HOME
+I don't like that a user has to copy the config file or modify the rc.local file: 
+	-Manipulate rc.local better to extract original user joystick config
+	-Write good install/uninstall scripts (that make use of above rc.local parsing / modifying)
+Joystick 1 - 2 swap - it works, but doesn't always have the effect I want... Work on this, maybe do something at the hardware level? (low priority)
+use lsusb to id joysticks??? Then we can assign them to controller port???
+
+make a mode that uses xpad unless there is a custom controller setup...
+
+make it so we don't kill xboxdrv in runcommand-onstart.sh if we are going to use the deault config :D
+	create a .txt file somewhere so we know that we don't have to restart drivers after game end
+
+PROBABLY DONE:
+20171024	Portablity 	-remove hardcoded directories!!!
+						-rename and move to 'joyhelp'
+
+DONE:
+20171024	Fixed minor errors in menu script 'joyswap.sh'.
+20171023	Wrote menu script 'joyswap.sh'.
+20171018	Started writing scripts to manage xboxdrv and xpad usage with RetroPie running on Rasberry Pi 3.
