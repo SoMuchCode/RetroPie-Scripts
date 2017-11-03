@@ -44,11 +44,11 @@ I have not thoroughly tested the installer yet... so here are the quick install 
 	chmod +x joyhelp-install.sh
 
 ### Make backups first!!!
-	sudo cp /etc/rc.local /etc/rc.local.bak
+	sudo cp /etc/rc.local /etc/rc.local.bakup
 
 	You may not have these files:
-	cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bak 
-	cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bak
+	cp /opt/retropie/configs/all/runcommand-onstart.sh /opt/retropie/configs/all/runcommand-onstart.sh.bakup
+	cp /opt/retropie/configs/all/runcommand-onend.sh /opt/retropie/configs/all/runcommand-onend.sh.bakup
 
 ### Fix file permissions if needed
 	chmod +x *.sh
