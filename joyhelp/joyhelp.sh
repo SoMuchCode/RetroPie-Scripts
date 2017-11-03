@@ -18,11 +18,12 @@
 # 	input_player4_joypad_index = "3"
 
 
-system="Not_yet_implemented"
+system="Not_Selected"
 
 
 # JOYHELP DIRECTORIES
 # maybe these could change...
+SYSCONFIGDIR=/opt/retropie/configs
 CONFIGDIR=/opt/retropie/configs/all
 JOYHELPDIR=$CONFIGDIR/joyhelp
 
@@ -81,6 +82,8 @@ p4_id=""
 debug=0
 needtoinit=0
 configchanged=0
+systemfullpath=""		# global used when editing a system specific config file.
+sysconfigchanged=0
 
 do_read_mainconfig() {
 # Read default RetroPie Joyhelp (GUI) config file...
@@ -200,6 +203,7 @@ else
 fi
 }
 
+#systemlist=""
 # runcommand-onstart stuff
 do_read_mainconfig
 #do_drivers_loaded
@@ -387,6 +391,111 @@ fi
 configchanged=1
 }
 
+do_savesysconfig_now() {
+if [ "$sysconfigchanged" -eq 1 ]; then
+	whiptail --yesno "Would you like to save config changes?" 20 60 2
+    if [ $? -eq 0 ]; then # yes
+      SYSCFGOUTFILE=$systemfullpath
+	  do_write_sysconfig
+	  sync
+	  #exit 0
+    fi
+fi
+	sysconfigchanged=0
+	system="Not_Selected"
+	SYSCFGOUTFILE=$JOYHELPDIR/.joyhelp.cfg
+	do_read_mainconfig
+}
+
+do_xboxdrvs_toggle() {
+if [ -f "$DEFCFG" ]; then
+	case $xboxdrv in
+	0)
+		xboxdrv=1
+	;;
+	*)
+		xboxdrv=0
+	esac
+	if [ "$debug" -ge "1" ]; then echo "joyhelp: xboxdrv $xboxdrv" >> $logfile; fi
+else
+	do_please_init
+fi
+sysconfigchanged=1
+}
+
+do_xpads_toggle() {
+if [ -f "$DEFCFG" ]; then
+	case $xpad in
+	0)
+		xpad=1
+	;;
+	*)
+		xpad=0
+	esac
+	if [ "$debug" -ge "1" ]; then echo "joyhelp: xpad $xpad" >> $logfile; fi
+else
+	do_please_init
+fi
+sysconfigchanged=1
+}
+
+arc_romlist_toggle() {
+if [ -f "$DEFCFG" ]
+then
+	if [ "$arcaderomlists" = "0" ]; then 
+		arcaderomlists=1
+	else
+		arcaderomlists=0
+	fi
+else
+	do_please_init
+fi
+sysconfigchanged=1
+echo "joyhelp: debug mode: $debug" >> $logfile
+}
+
+do_p1_profile() {
+	whiptail --title "Joyhelp" --infobox "Not yet implemented." 8 78
+	sleep 2
+	sysconfigchanged=1
+}
+
+do_p2_profile() {
+	whiptail --title "Joyhelp" --infobox "Not yet implemented." 8 78
+	sleep 2
+	sysconfigchanged=1
+}
+
+do_p3_profile() {
+	whiptail --title "Joyhelp" --infobox "Not yet implemented." 8 78
+	sleep 2
+	sysconfigchanged=1
+}
+
+do_p4_profile() {
+	whiptail --title "Joyhelp" --infobox "Not yet implemented." 8 78
+	sleep 2
+	sysconfigchanged=1
+}
+
+arc_dial() {
+	whiptail --title "Joyhelp" --infobox "Not yet implemented." 8 78
+	sleep 2
+	sysconfigchanged=1
+}
+
+arc_trackball() {
+	whiptail --title "Joyhelp" --infobox "Not yet implemented." 8 78
+	sleep 2
+	sysconfigchanged=1
+}
+
+arc_analog() {
+	whiptail --title "Joyhelp" --infobox "Not yet implemented." 8 78
+	sleep 2
+	sysconfigchanged=1
+}
+
 do_debug_toggle() {
 if [ -f "$DEFCFG" ]
 then
@@ -407,12 +516,22 @@ do_init() {
 	if [ ! -f "$CONFIGDIR/runcommand-onstart.sh.bakup" ]; then
 		if [ -f "$CONFIGDIR/runcommand-onstart.sh" ]; then
 			cp "$CONFIGDIR/runcommand-onstart.sh" "$CONFIGDIR/runcommand-onstart.sh.bakup"
-		fi
+		else
+			echo "#!/bin/bash" > $CONFIGDIR/runcommand-onstart.sh.bakup
+			echo "" >> $CONFIGDIR/runcommand-onstart.sh.bakup
+			echo "exit 0" >> $CONFIGDIR/runcommand-onstart.sh.bakup
+			chmod +x $CONFIGDIR/runcommand-onstart.sh.bakup
+		fi		
 	fi
 	if [ ! -f "$CONFIGDIR/runcommand-onend.sh.bakup" ]; then
 		if [ -f "$CONFIGDIR/runcommand-onend.sh" ]; then
 			cp "$CONFIGDIR/runcommand-onend.sh" "$CONFIGDIR/runcommand-onend.sh.bakup"
-		fi
+		else
+			echo "#!/bin/bash" > $CONFIGDIR/runcommand-onend.sh.bakup
+			echo "" >> $CONFIGDIR/runcommand-onend.sh.bakup
+			echo "exit 0" >> $CONFIGDIR/runcommand-onend.sh.bakup
+			chmod +x $CONFIGDIR/runcommand-onend.sh.bakup
+		fi	
 	fi
 	# Copy files
 	if [ -f "$JOYHELPDIR/.scripts/runcommand-onstart.sh" ]; then
@@ -513,24 +632,95 @@ ASK_TO_REBOOT=1
 do_finish
 }
 
+do_system_read_config() {
+
+## recursive
+shopt -s globstar
+
+for dir in $SYSCONFIGDIR/* ;do
+	[[ ! -d $dir ]] && continue # if not directory then skip
+	xtest=$(echo "$dir" | sed "s|$SYSCONFIGDIR\/||g" )
+	if [ "$xtest" == "all" ] || [ "$xtest" == "ports" ]; then
+		echo "joyhelp: ports " > /dev/null 2>&1
+	else
+		#systemlist=$systemlist" "$dir
+		#echo "$xtest		$dir"
+		#whatever="$whatever \"$xtest\" \"Edit or create $xtest config.\" \\ "
+		whatever=$whatever" "$xtest" $dir "
+	fi
+done	
+	
+# do the same for the ports dir
+for dir in $SYSCONFIGDIR/ports/* ;do
+	[[ ! -d $dir ]] && continue # if not directory then skip
+	xtest=$(echo "$dir" | sed "s|$SYSCONFIGDIR\/||g" )
+	if [ "$xtest" == "all" ]; then
+		echo "joyhelp: all " > /dev/null 2>&1
+	else
+		#systemlist=$systemlist" "$dir
+		#echo "$xtest		$dir"
+		#whatever="$whatever \"$xtest\" \"Edit or create $xtest config.\" \\ "
+		whatever=$whatever" "$xtest" $dir "
+	fi	
+done
+}
+
 do_system_select() {
-whiptail --title "System Select" --infobox "Not yet implemented!" 8 78
-sleep 3
-## This will need to choose and select an active system
-## if there is a config already it should read it in
-# from .config directory first then game directory
-# so the game-dir version takes precidence
+#systemlist=""
+do_system_read_config
+	RET=0
+	while true; do
+	  FUN=$(whiptail --title "Raspberry Pi Joyhelp: System-Specific Options" --menu "Default In-Game Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
+		$whatever \
+		3>&1 1>&2 2>&3)
+	  RET=$?
+	  if [ $RET -eq 1 ]; then
+		#do_saveconfig_now
+		#main_loop
+		break
+	  elif [ $RET -eq 0 ]; then
+		# User selected a system... $FUN
+		system="$FUN"
+		# we need to make a variable with the full path to the config file... yay
+		tempvar=""
+		tempvar=$( echo "$FUN" | grep ports )
+		if [ "$tempvar" ]; then
+			# ports is in the name... we gotta do something about that...
+			split=$( echo "$FUN" | sed -r "s|ports\/||" )
+			systemfullpath=$SYSCONFIGDIR/ports/$split/joyhelp.cfg
+			###  echo "$systemfullpath" & sleep 4
+			
+		else
+			systemfullpath=$SYSCONFIGDIR/$FUN/joyhelp.cfg
+			###  echo "$systemfullpath" & sleep 4
+			
+		fi
+		
+		if [ -f "$systemfullpath" ]; then
+			#hey we found a config file, read it :D
+			DEFCONTENT=$(cat $systemfullpath | sed -r '/[^=]+=[^=]+/!d' | sed -r 's/\s+=\s/=/g')
+			eval "$DEFCONTENT"
+			### echo "$DEFCONTENT" & sleep 1
+		elif [ -f "$JOYHELPDIR/.configs/$FUN.cfg" ]; then
+			#hey we found an included config file, read it :D
+			DEFCONTENT=$(cat "$JOYHELPDIR/.configs/$FUN.cfg" | sed -r '/[^=]+=[^=]+/!d' | sed -r 's/\s+=\s/=/g')
+			eval "$DEFCONTENT"
+			### echo "$DEFCONTENT" & sleep 1
+			sysconfigchanged=1
+		else
+			do_read_mainconfig
+		fi
+	  else
+		exit 1
+	  fi
+	do_ingame_options
 
+	done
 }
 
-do_sys_xbox_enabled() {
-whiptail --title "System Xboxdrv" --infobox "Not yet implemented!" 8 78
-sleep 3
-}
-
-do_sys_xpad_enabled() {
-whiptail --title "System Xpad" --infobox "Not yet implemented!" 8 78
-sleep 3
+do_sys_please_select() {
+whiptail --title "System Select" --infobox "Please select a system first." 8 78
+sleep 2
 }
 
 do_gui_options() {
@@ -548,8 +738,8 @@ do_gui_options() {
 	  RET=$?
 	  if [ $RET -eq 1 ]; then
 		do_saveconfig_now
-		main_loop
-		false
+		#main_loop
+		#false
 	  elif [ $RET -eq 0 ]; then
 		case "$FUN" in
 		  1\ *) do_xboxdrv_sudo ;;
@@ -568,29 +758,80 @@ do_gui_options() {
 }
 
 do_ingame_options() {
-	RET=0
+RET="0"
+if [ "$system" = "Not_Selected" ]; then			## we have not selected a system yet
 	while true; do
 	  FUN=$(whiptail --title "Raspberry Pi Joyhelp: System-Specific Options" --menu "Default In-Game Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
 		"1 Select System: $system" "System-specific config to edit" \
-		"2 Xboxdrv = " "Enable xboxdrv in game" \
-		"3 Xpad = " "Disable xpad in game" \
+		"X Xboxdrv = $xboxdrv" "In-Game Setting: 0=Disable,1=Enable." \
+		"X Xpad = $xpad" "In-Game Setting: 0=Disable,1=Enable." \
+		"X p1_profile" "$p1_profile" \
+		"X p2_profile" "$p2_profile" \
+		"X p3_profile" "$p3_profile" \
+		"X p4_profile" "$p4_profile" \
+		"X Arcade ROM Lists = $arcaderomlists" "Use arcade ROM lists." \
+		"X   4-Way games" "\"$arcaderom4way\"" \
+		"X   Dial games" "\"$arcaderomdial\"" \
+		"X   Trackball games" "\"$arcaderomtrackball\"" \
+		"X   Analog games" "\"$arcaderomanalog\"" \
 		3>&1 1>&2 2>&3)
 	  RET=$?
 	  if [ $RET -eq 1 ]; then
 		do_saveconfig_now
 		main_loop
-		false
+		#false
 	  elif [ $RET -eq 0 ]; then
 		case "$FUN" in
 		  1\ *) do_system_select ;;
-		  2\ *) do_sys_xbox_enabled ;;
-		  3\ *) do_sys_xpad_enabled ;;
+		  X\ *) do_sys_please_select ;;
 		  *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
 		esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
 	  else
 		exit 1
 	  fi
 	done
+else
+	while true; do
+	  FUN=$(whiptail --title "Raspberry Pi Joyhelp: System-Specific Options" --menu "Default In-Game Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
+		"1 Select System: $system" "System-specific config to edit" \
+		"2 Xboxdrv = $xboxdrv" "$xboxdrv setting: 0=Disable,1=Enable." \
+		"3 Xpad = $xpad" "$xpad setting: 0=Disable,1=Enable." \
+		"4 p1_profile" "$p1_profile" \
+		"5 p2_profile" "$p2_profile" \
+		"6 p3_profile" "$p3_profile" \
+		"7 p4_profile" "$p4_profile" \
+		"8 Arcade ROM Lists = $arcaderomlists" "Use arcade ROM lists." \
+		"9    4-Way games" "\"$arcaderom4way\"" \
+		"10   Dial games" "\"$arcaderomdial\"" \
+		"11   Trackball games" "\"$arcaderomtrackball\"" \
+		"12   Analog games" "\"$arcaderomanalog\"" \
+		3>&1 1>&2 2>&3)
+	  RET=$?
+	  if [ $RET -eq 1 ]; then
+		do_savesysconfig_now
+		break 3
+		#false
+	  elif [ $RET -eq 0 ]; then
+		case "$FUN" in
+		  1\ *) do_system_select ;;
+		  2\ *) do_xboxdrvs_toggle ;;
+		  3\ *) do_xpads_toggle ;;
+		  4\ *) do_p1_profile ;;
+		  5\ *) do_p2_profile ;;
+		  6\ *) do_p3_profile ;;
+		  7\ *) do_p4_profile ;;
+		  8\ *) arc_romlist_toggle ;;
+		  9\ *) arc_fourway ;;
+		  10\ *) arc_dial ;;
+		  11\ *) arc_trackball ;;
+		  12\ *) arc_analog ;;
+		  *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
+		esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+	  else
+		exit 1
+	  fi
+	done
+fi
 }
 
 main_loop() {
