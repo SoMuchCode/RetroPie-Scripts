@@ -17,10 +17,6 @@
 # 	input_player3_joypad_index = "2"
 # 	input_player4_joypad_index = "3"
 
-
-system="Not_Selected"
-
-
 # JOYHELP DIRECTORIES
 # maybe these could change...
 SYSCONFIGDIR=/opt/retropie/configs
@@ -39,6 +35,13 @@ ASK_TO_REBOOT=0
 WT_WIDTH=80
 WT_WIDTH=120
 WT_MENU_HEIGHT=$(($WT_HEIGHT-7))
+
+system="Not_Selected"
+controllerID=""
+controllerName=""
+playerNum="Disabled"
+mimic="Disabled"
+type="Disabled"
 
 # System specific variables
 # used by runcommand-onstart
@@ -78,6 +81,10 @@ p1_id=""
 p2_id=""
 p3_id=""
 p4_id=""
+p1_bid=""
+p2_bid=""
+p3_bid=""
+p4_bid=""
 
 debug=0
 needtoinit=0
@@ -171,20 +178,92 @@ echo "# Joystick calibration file path/name" >> $SYSCFGOUTFILE
 echo "calfilelocation = \"$calfilelocation\"" >> $SYSCFGOUTFILE
 echo "" >> $SYSCFGOUTFILE
 echo "# Custom commands." >> $SYSCFGOUTFILE
-echo "p1_profile = \"$p1_profile\"" >> $SYSCFGOUTFILE
-echo "p2_profile = \"$p2_profile\"" >> $SYSCFGOUTFILE
-echo "p3_profile = \"$p3_profile\"" >> $SYSCFGOUTFILE
-echo "p4_profile = \"$p4_profile\"" >> $SYSCFGOUTFILE
+
+if [ "$p1_profile" ]; then
+	echo "p1_profile = \"$p1_profile\"" >> $SYSCFGOUTFILE
+else
+	echo "#p1_profile = \"$p1_profile\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p2_profile" ]; then
+	echo "p2_profile = \"$p2_profile\"" >> $SYSCFGOUTFILE
+else
+	echo "#p2_profile = \"$p2_profile\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p3_profile" ]; then
+	echo "p3_profile = \"$p3_profile\"" >> $SYSCFGOUTFILE
+else
+	echo "#p3_profile = \"$p3_profile\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p4_profile" ]; then
+	echo "p4_profile = \"$p4_profile\"" >> $SYSCFGOUTFILE
+else
+	echo "#p4_profile = \"$p4_profile\"" >> $SYSCFGOUTFILE
+fi
+
 echo "" >> $SYSCFGOUTFILE
-echo "#p1_id = \"$p1_id\"" >> $SYSCFGOUTFILE
-echo "#p2_id = \"$p2_id\"" >> $SYSCFGOUTFILE
-echo "#p3_id = \"$p3_id\"" >> $SYSCFGOUTFILE
-echo "#p4_id = \"$p4_id\"" >> $SYSCFGOUTFILE
+if [ "$p1_bid" ]; then
+	echo "p1_bid = \"$p1_bid\"" >> $SYSCFGOUTFILE
+else
+	echo "#p1_bid = \"$p1_bid\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p2_bid" ]; then
+	echo "p2_bid = \"$p2_bid\"" >> $SYSCFGOUTFILE
+else
+	echo "#p2_bid = \"$p2_bid\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p3_bid" ]; then
+	echo "p3_bid = \"$p3_bid\"" >> $SYSCFGOUTFILE
+else
+	echo "#p3_bid = \"$p3_bid\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p4_bid" ]; then
+	echo "p4_bid = \"$p4_bid\"" >> $SYSCFGOUTFILE
+else
+	echo "#p4_bid = \"$p4_bid\"" >> $SYSCFGOUTFILE
+fi
 echo "" >> $SYSCFGOUTFILE
-echo "#p1_lconfig=\"$p1_lconfig\"" >> $SYSCFGOUTFILE
-echo "#p2_lconfig=\"$p1_lconfig\"" >> $SYSCFGOUTFILE
-echo "#p3_lconfig=\"$p1_lconfig\"" >> $SYSCFGOUTFILE
-echo "#p4_lconfig=\"$p1_lconfig\"" >> $SYSCFGOUTFILE
+
+if [ "$p1_id" ]; then
+	echo "p1_id = \"$p1_id\"" >> $SYSCFGOUTFILE
+else
+	echo "#p1_id = \"$p1_id\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p2_id" ]; then
+	echo "p2_id = \"$p2_id\"" >> $SYSCFGOUTFILE
+else
+	echo "#p2_id = \"$p2_id\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p3_id" ]; then
+	echo "p3_id = \"$p3_id\"" >> $SYSCFGOUTFILE
+else
+	echo "#p3_id = \"$p3_id\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p4_id" ]; then
+	echo "p4_id = \"$p4_id\"" >> $SYSCFGOUTFILE
+else
+	echo "#p4_id = \"$p4_id\"" >> $SYSCFGOUTFILE
+fi
+echo "" >> $SYSCFGOUTFILE
+if [ "$p1_lconfig" ]; then
+	echo "p1_lconfig=\"$p1_lconfig\"" >> $SYSCFGOUTFILE
+else
+	echo "#p1_lconfig=\"$p1_lconfig\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p2_lconfig" ]; then
+	echo "p2_lconfig=\"$p2_lconfig\"" >> $SYSCFGOUTFILE
+else
+	echo "#p2_lconfig=\"$p2_lconfig\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p3_lconfig" ]; then
+	echo "p3_lconfig=\"$p3_lconfig\"" >> $SYSCFGOUTFILE
+else
+	echo "#p3_lconfig=\"$p3_lconfig\"" >> $SYSCFGOUTFILE
+fi
+if [ "$p4_lconfig" ]; then
+	echo "p4_lconfig=\"$p4_lconfig\"" >> $SYSCFGOUTFILE
+else
+	echo "#p4_lconfig=\"$p4_lconfig\"" >> $SYSCFGOUTFILE
+fi
 echo "" >> $SYSCFGOUTFILE
 echo "# Arcade use rom lists" >> $SYSCFGOUTFILE
 echo "# These commands will be applied to the every controller" >> $SYSCFGOUTFILE
@@ -392,7 +471,7 @@ configchanged=1
 }
 
 do_savesysconfig_now() {
-if [ "$sysconfigchanged" -eq 1 ]; then
+if [ "$sysconfigchanged" = 1 ]; then
 	whiptail --yesno "Would you like to save config changes?" 20 60 2
     if [ $? -eq 0 ]; then # yes
       SYSCFGOUTFILE=$systemfullpath
@@ -723,6 +802,178 @@ whiptail --title "System Select" --infobox "Please select a system first." 8 78
 sleep 2
 }
 
+do_list_usb() {
+usb=$( lsusb )
+	xtemp=$( echo "$usb" | grep -v 1ea7: | grep -v "Super\ Gate" | grep -v "Standard\ Microsystems" | grep -v "4-Port\ HUB" | grep -v "root\ hub" )
+	#xtemp=$( echo "$usb" | grep -v 1ea7: | grep -v "Super\ Gate" | grep -v "Standard\ Microsystems" )
+	echo "$xtemp"
+}
+
+do_list_byid() {
+usb=$( ls /dev/input/by-id/*-event-* )
+	#xtemp=$( echo "$usb" | grep -v Mouse | grep -v mouse )
+	xtemp=$( echo "$usb" | grep -v keyboard | grep -v Mouse | grep -v mouse )
+	echo "$xtemp"
+}
+
+change_active_cont() {
+	case $playerNum in
+	0) playerNum=1 ;;
+	1) playerNum=2 ;;
+	2) playerNum=3 ;;
+	3) playerNum=4 ;;
+	4) playerNum="Disabled" ;;
+	Disabled) playerNum=1 ;;
+	esac
+}
+
+change_mimic() {
+if ! [ "$playerNum" = "Disabled" ] && ! [ "$playerNum" = "0" ]; then
+	case $mimic in
+	Disabled) mimic="xpad" ;;
+	xpad) mimic="xpad-wireless" ;;
+	xpad-wireless) mimic="Disabled" ;;
+	Disabled) mimic=1 ;;
+	esac
+fi
+}
+
+change_type() {
+if ! [ "$playerNum" = "Disabled" ] && ! [ "$playerNum" = "0" ]; then
+	case $type in
+	Disabled) type="xbox360" ;;
+	xbox360) type="xbox360-wireless" ;;
+	xbox360-wireless) type="xbox360-guitar" ;;
+	xbox360-guitar) type="xbox" ;;
+	xbox) type="xbox-mat" ;;
+	xbox-mat) type="Disabled" ;;
+	esac
+fi
+}
+
+do_pick_controller() {
+	controllerID=""
+	RET=0
+	while true; do
+	FUN=$(whiptail --title "Raspberry Pi Joyhelp: Select Controller by vendor:product" --menu "Default In-Game Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
+		$whatever \
+		3>&1 1>&2 2>&3)
+	  RET=$?
+	  if [ $RET -eq 1 ]; then
+		exit 0
+	  elif [ $RET -eq 0 ]; then
+		echo "$FUN"
+		break
+	  else
+		exit 1
+	  fi
+	done
+}
+
+do_select_player_number() {
+	#playerNum=0
+	RET=0
+	while true; do
+	FUN=$(whiptail --title "Raspberry Pi Joyhelp: Which Player?" --menu "Default In-Game Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
+		"1" "Player 1" \
+		"2" "Player 2" \
+		"3" "Player 3" \
+		"4" "Player 4" \
+		3>&1 1>&2 2>&3)
+	  RET=$?
+	  if [ $RET -eq 1 ]; then
+		break
+	  elif [ $RET -eq 0 ]; then
+		configchanged=1
+		echo "$FUN"
+		break
+	  else
+		exit 1
+	  fi
+	done
+}
+
+calc_wt_size
+
+do_controller_setup() {
+	#playerNum=0
+	whatever=$( echo "$(do_list_usb)" | sed 's|Bus.....Device......ID.||g' | sed 's| | |' | sed 's| |_|g' | sed 's|_|\ |' | sed 's|\(.\)$|\1 |' )
+	controllerID=$(do_pick_controller)
+	if [ "$controllerID" ]; then
+		if [ "$playerNum" = 0 ] || [ "$playerNum" = "Disabled" ]; then
+			playerNum=$(do_select_player_number)
+		fi
+			case $playerNum in
+				1) p1_id=$controllerID ;;
+				2) p2_id=$controllerID ;;
+				3) p3_id=$controllerID ;;
+				4) p4_id=$controllerID ;;
+				*) ;;
+			esac
+	fi
+	if [ "$controllerID" ]; then
+		whiptail --title "Joyhelp: Identify Controller" --infobox "$controllerID selected." 8 $WT_WIDTH
+		sleep 2
+		configchanged=1
+	fi
+}
+
+do_controller_setup_byid() {
+	#playerNum=0
+	whatever=$( echo "$(do_list_byid)" | tr "©" "?" | sed "s|'||" | sed 's|\(.\)$|\1 Controller |' )
+	controllerID=$(do_pick_controller)
+	temp=$( echo $controllerID | head -c 22 )
+	if [ "$temp" = "/dev/input/by-id/usb-?" ]; then			## remove © from the ID or it won't work
+		temp=$( echo $controllerID | sed "s|usb-|usb|" )	## ugly hack =D
+		controllerID=$temp
+	fi
+	if [ "$controllerID" ]; then
+		if [ "$playerNum" = 0 ] || [ "$playerNum" = "Disabled" ]; then
+			playerNum=$(do_select_player_number)
+		fi
+		case $playerNum in
+			1) p1_bid=$controllerID ;;
+			2) p2_bid=$controllerID ;;
+			3) p3_bid=$controllerID ;;
+			4) p4_bid=$controllerID ;;
+			*) ;;
+		esac
+	fi
+	if [ "$controllerID" ]; then
+		whiptail --title "Joyhelp: Identify Controller" --infobox "$controllerID selected." 8 $WT_WIDTH
+		sleep 2
+		configchanged=1
+	fi
+}
+
+do_setup_controller() {
+	while true; do
+	  FUN=$(whiptail --title "Raspberry Pi Joyhelp: Configure Controller" --menu "GUI Setup Options" $WT_HEIGHT $WT_WIDTH $WT_MENU_HEIGHT --cancel-button Finish --ok-button Select \
+		"1 Active Controller = $playerNum" "" \
+		"2 Identify Controller" "Configure controller: VEND:PROD" \
+		"3 Identify Controller" "Configure controller: by-id" \
+		"4 Mimic: $mimic" "" \
+		"5 Type: $type" "" \
+		3>&1 1>&2 2>&3)
+	  RET=$?
+	  if [ $RET -eq 1 ]; then
+		do_saveconfig_now
+		break
+	  elif [ $RET -eq 0 ]; then
+		case "$FUN" in
+		  1\ *) change_active_cont ;;
+		  2\ *) do_controller_setup ;; 
+		  3\ *) do_controller_setup_byid ;;
+		  4\ *) change_mimic ;;
+		  5\ *) change_type ;;
+		  *) whiptail --msgbox "Programmer error: unrecognized option" 20 60 1 ;;
+		esac || whiptail --msgbox "There was an error running option $FUN" 20 60 1
+	  else
+		exit 1
+	  fi
+	done
+}
+
 do_gui_options() {
 	RET=0
 	while true; do
@@ -876,7 +1127,7 @@ if [ "$needtoinit" = "1" ]; then
 	  else
 		exit 1
 	  fi
-	do_finish  
+	do_finish
 	done
 else
 	while true; do
@@ -889,6 +1140,8 @@ else
 		"6 Xpad = $xpad" "Default In-Game Setting: 0=Disable,1=Enable." \
 		"7 System-Specific Options" "Edit Xpad/Xboxdrv system-specific config." \
 		"8 Swap Joystick 0 and 1" "In retroarch systems only." \
+		"a identify controller" "BETA OPTION: works, sort of..." \
+		"b Controller Setup" "BETA OPTION: works, sort of..." \
 		"9 About Joyhelp" "About this program." \
 		"10 Initialize Joyhelp" "Generate config files for Joyhelp." \
 		"11 Disable Joyhelp" "Restore default rc.local file." \
@@ -898,6 +1151,8 @@ else
 		do_finish
 	  elif [ $RET -eq 0 ]; then
 		case "$FUN" in
+		  a\ *) playerNum="Disabled"; do_controller_setup; do_controller_setup_byid ;;
+		  b\ *) do_setup_controller ;;
 		  1\ *) do_xboxdrv_sudo ;;
 		  2\ *) do_xboxdrv_toggle ;;
 		  3\ *) do_xpad_toggle ;;

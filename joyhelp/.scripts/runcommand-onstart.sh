@@ -231,6 +231,11 @@ if [ "$xpadrp" = 0 ] && [ "$xpad" = 1 ]; then
 	if [ "$debug" -ge "1" ]; then echo "rcos: xpad loaded" >> $logfile; fi
 fi
 
+if [ "$xpadloaded" ] && [ "$xpad" = 1 ]; then
+	if [ "$debug" -ge "1" ]; then echo "rcos: xpad to xpad - nothing to do, exiting..." >> $logfile; fi
+	exit 0
+fi
+
 # so we don't want to hardcode the command into the launch file...
 if [ "$sudoForced" = 1 ]; then
 	launchPrefix="sudo "$(cat "$JOYHELPDIR/.scripts/.xbd_prefix")
@@ -243,13 +248,13 @@ if ! [ "$p1_lconfig" ]; then
 	p1_lconfig=$(cat "$JOYHELPDIR/.scripts/.xbd_p1config")
 fi
 if ! [ "$p2_lconfig" ]; then
-	p2_lconfig=$(cat "$JOYHELPDIR/.scripts/.xbd_p1config")
+	p2_lconfig=$(cat "$JOYHELPDIR/.scripts/.xbd_p2config")
 fi
 if ! [ "$p3_lconfig" ]; then
-	p3_lconfig=$(cat "$JOYHELPDIR/.scripts/.xbd_p1config")
+	p3_lconfig=$(cat "$JOYHELPDIR/.scripts/.xbd_p3config")
 fi
 if ! [ "$p4_lconfig" ]; then
-	p4_lconfig=$(cat "$JOYHELPDIR/.scripts/.xbd_p1config")
+	p4_lconfig=$(cat "$JOYHELPDIR/.scripts/.xbd_p4config")
 fi
 # p1_lconfig=$(cat "$JOYHELPDIR/.scripts/.xbd_p1config")
 # p2_lconfig=$(cat "$JOYHELPDIR/.scripts/.xbd_p2config")
@@ -932,22 +937,69 @@ case $1 in
 	;;
 esac
 
+# if we have both vend:prod and by-id, default to vend:prod (arbitrary)
 if [ "$p1_id" ]; then
 	xtemp="$p1_profile --device-by-id $p1_id"
+	p1_profile=$xtemp
+elif [ "$p1_bid" ]; then
+	xtemp="$p1_profile --evdev $p1_bid"
 	p1_profile=$xtemp
 fi
 if [ "$p2_id" ]; then
 	xtemp="$p2_profile --device-by-id $p2_id"
 	p2_profile=$xtemp
+elif [ "$p2_bid" ]; then
+	xtemp="$p2_profile --evdev $p2_bid"
+	p2_profile=$xtemp
 fi
 if [ "$p3_id" ]; then
 	xtemp="$p3_profile --device-by-id $p3_id"
+	p3_profile=$xtemp
+elif [ "$p3_bid" ]; then
+	xtemp="$p3_profile --evdev $p3_bid"
 	p3_profile=$xtemp
 fi
 if [ "$p4_id" ]; then
 	xtemp="$p4_profile --device-by-id $p4_id"
 	p4_profile=$xtemp
+elif [ "$p4_bid" ]; then
+	xtemp="$p4_profile --evdev $p4_bid"
+	p4_profile=$xtemp
 fi
+
+# ## Joystick select by ID
+# if [ "$p1_id" ]; then
+	# xtemp="$p1_profile --device-by-id $p1_id"
+	# p1_profile=$xtemp
+# fi
+# if [ "$p2_id" ]; then
+	# xtemp="$p2_profile --device-by-id $p2_id"
+	# p2_profile=$xtemp
+# fi
+# if [ "$p3_id" ]; then
+	# xtemp="$p3_profile --device-by-id $p3_id"
+	# p3_profile=$xtemp
+# fi
+# if [ "$p4_id" ]; then
+	# xtemp="$p4_profile --device-by-id $p4_id"
+	# p4_profile=$xtemp
+# fi
+# if [ "$p1_bid" ]; then
+	# xtemp="$p1_profile --evdev $p1_bid"
+	# p1_profile=$xtemp
+# fi
+# if [ "$p2_bid" ]; then
+	# xtemp="$p2_profile --evdev $p2_bid"
+	# p2_profile=$xtemp
+# fi
+# if [ "$p3_bid" ]; then
+	# xtemp="$p3_profile --evdev $p3_bid"
+	# p3_profile=$xtemp
+# fi
+# if [ "$p4_bid" ]; then
+	# xtemp="$p4_profile --evdev $p4_bid"
+	# p4_profile=$xtemp
+# fi
 
 if [ "$xbdctrlr" -le "$controllers" ]; then
 	controllers=$xbdctrlr
@@ -967,6 +1019,11 @@ case $controllers in
 	joycommand="$launchPrefix $p1_profile $p1_lconfig $launchSuffix &"
 	;;
 esac
+
+sudo rm -f /dev/input/js*			## TESTING THIS
+if [ "$debug" -ge "1" ]; then ls /dev/input/j* >> $logfile; fi
+
+joycommand=$( echo "$joycommand" | xargs )		## This is to trim whitespace
 
 # we should run the command, user wants xboxdrv to run
 if [ "$xboxdrv" = 1 ] || [ "$xboxdrv" = 2 ]; then
